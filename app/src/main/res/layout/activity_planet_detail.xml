@@ -23,14 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-black"
-        android:text="Mars"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imagePlanet"
         app:layout_constraintStart_toStartOf="@+id/imagePlanet"
-        app:layout_constraintTop_toBottomOf="@+id/imagePlanet" />
+        app:layout_constraintTop_toBottomOf="@+id/imagePlanet"
+        tools:text="Mars" />
 
     <TextView
         android:id="@+id/textPlanetShortDesc"
@@ -38,12 +38,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
-        android:text="Where the androids live"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textPlanetName"
         app:layout_constraintStart_toStartOf="@+id/textPlanetName"
-        app:layout_constraintTop_toBottomOf="@+id/textPlanetName" />
+        app:layout_constraintTop_toBottomOf="@+id/textPlanetName"
+        tools:text="Where the androids live" />
 </androidx.constraintlayout.widget.ConstraintLayout>
