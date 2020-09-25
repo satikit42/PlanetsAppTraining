@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.planetsapptraining.PlanetMockedData
+import androidx.navigation.fragment.navArgs
 import com.example.planetsapptraining.R
 import kotlinx.android.synthetic.main.fragment_planet_detail.*
 
 class PlanetDetailFragment : Fragment() {
+
+    private val arguments: PlanetDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,11 +22,8 @@ class PlanetDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val planet = PlanetMockedData.planets[0]
-
+        val planet = arguments.planet
         textPlanetName.text = planet.name
         textPlanetShortDesc.text = planet.shortDescription
     }
-
 }
