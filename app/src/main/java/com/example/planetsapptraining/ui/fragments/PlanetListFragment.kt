@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ class PlanetListFragment : Fragment(), PlanetListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: PlanetAdapter
-    private val viewModel : PlanetListViewModel by viewModels()
+    private val viewModel: PlanetListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,19 +26,21 @@ class PlanetListFragment : Fragment(), PlanetListener {
         return inflater.inflate(R.layout.fragment_planet_list, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        render()
+    override fun onStart() {
+        super.onStart()
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { render(it) })
+        viewModel.getPlanetListViewState()
     }
 
-    private fun render() {
+    private fun render(viewState: PlanetListViewState) {
 
-        textPlanetsTitle.text = viewModel.getPlanetListViewState().title
+        textPlanetsTitle.text = viewState.title
 
         viewAdapter = PlanetAdapter(
-            viewModel.getPlanetListViewState().planets,
+            viewState.planets,
             requireContext(),
-            this)
+            this
+        )
 
         recyclerView = recycler_view_planets.apply {
             setHasFixedSize(true)
@@ -47,11 +50,15 @@ class PlanetListFragment : Fragment(), PlanetListener {
     }
 
     override fun onPlanetTapped(planet: PlanetListItemViewState) {
-        findNavController(this).navigate(PlanetListFragmentDirections.actionPlanetListFragmentToPlanetDetailFragment(planet))
+        findNavController(this).navigate(
+            PlanetListFragmentDirections.actionPlanetListFragmentToPlanetDetailFragment(
+                planet
+            )
+        )
     }
 }
 
-interface PlanetListener{
+interface PlanetListener {
     fun onPlanetTapped(planet: PlanetListItemViewState)
 }
 
