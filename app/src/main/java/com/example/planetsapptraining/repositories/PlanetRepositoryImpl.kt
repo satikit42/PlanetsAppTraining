@@ -1,18 +1,17 @@
 package com.example.planetsapptraining.repositories
 
 import com.example.planetsapptraining.Planet
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class PlanetRepositoryImpl : PlanetRepository {
-
-    private val service = PlanetClient.getPlanetClient()
+class PlanetRepositoryImpl(val service: PlanetService, val dispatcher : CoroutineDispatcher = Dispatchers.IO) : PlanetRepository {
 
     override suspend fun getPlanetList(): List<Planet> {
-        return withContext(Dispatchers.IO){
+        return withContext(dispatcher){
             val planetList = service.getPlanets()
             planetList.map {
-                Planet(it.name, it.shortDescription, it.imageUrl)
+                it.mapToDomain()
             }
         }
     }

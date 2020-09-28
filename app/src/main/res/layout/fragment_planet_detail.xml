@@ -13,10 +13,10 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="100dp"
-        android:background="@drawable/mars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/mars"/>
 
     <TextView
         android:id="@+id/textPlanetName"
