@@ -18,5 +18,9 @@
         android:id="@+id/planetDetailFragment"
         android:name="com.example.planetsapptraining.ui.fragments.PlanetDetailFragment"
         android:label="planet_detail_fragment"
-        tools:layout="@layout/fragment_planet_detail" />
+        tools:layout="@layout/fragment_planet_detail">
+    <argument
+        android:name="planet"
+        app:argType="com.example.planetsapptraining.Planet"/>
+    </fragment>
 </navigation>
