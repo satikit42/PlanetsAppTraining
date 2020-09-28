@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_planet_detail">
     <argument
         android:name="planet"
-        app:argType="com.example.planetsapptraining.Planet"/>
+        app:argType="com.example.planetsapptraining.PlanetListItemViewState"/>
     </fragment>
 </navigation>

@@ -9,7 +9,7 @@ import com.example.planetsapptraining.ui.fragments.PlanetListener
 import kotlinx.android.synthetic.main.item_planet_list.view.*
 
 class PlanetAdapter(
-    private val planets: List<Planet>,
+    private val planets: List<PlanetListItemViewState>,
     private val context: Context?,
     private val itemClickListener: PlanetListener
 ) :
@@ -30,7 +30,7 @@ class PlanetAdapter(
 
     inner class PlanetViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(planet: Planet) {
+        fun bind(planet: PlanetListItemViewState) {
             view.textPlanetName.text = planet.name
             view.textPlanetShortDesc.text = planet.shortDescription
             view.setOnClickListener {
