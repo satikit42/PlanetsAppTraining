@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.planetsapptraining.ui.fragments.PlanetListener
 import kotlinx.android.synthetic.main.item_planet_list.view.*
 
@@ -33,6 +34,7 @@ class PlanetAdapter(
         fun bind(planet: PlanetListItemViewState) {
             view.textPlanetName.text = planet.name
             view.textPlanetShortDesc.text = planet.shortDescription
+            Glide.with(view).load(planet.imageUrl).into(view.imagePlanet)
             view.setOnClickListener {
                 itemClickListener.onPlanetTapped(planet)
             }
