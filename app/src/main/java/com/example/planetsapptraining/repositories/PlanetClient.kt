@@ -7,9 +7,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object PlanetClient {
 
-    fun getPlanetClient() : PlanetService {
+    val service : PlanetService
+
+    init {
         val client = OkHttpClient.Builder().addInterceptor(debugInterceptor()).build()
-        return Retrofit.Builder()
+        service = Retrofit.Builder()
             .baseUrl("https://y3fsc8hysh.execute-api.us-east-2.amazonaws.com")
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
