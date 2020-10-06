@@ -4,12 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.planetsapptraining.domain.FavoriteRepository
 import com.example.planetsapptraining.domain.PlanetRepository
 import com.example.planetsapptraining.ui.fragments.planetdetail.PlanetViewState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlanetListViewModel @Inject constructor(private val planetRepository: PlanetRepository) :
+class PlanetListViewModel @Inject constructor(
+    private val planetRepository: PlanetRepository,
+    private val favoriteRepository: FavoriteRepository
+) :
     ViewModel() {
 
     private val title: String = "Planets"
@@ -19,13 +23,15 @@ class PlanetListViewModel @Inject constructor(private val planetRepository: Plan
 
     fun getPlanetListViewState() {
         viewModelScope.launch {
+            val favorites = favoriteRepository.getFavorites()
             _viewState.value = PlanetListViewState(title, planetRepository.getPlanetList().map {
                 PlanetViewState(
                     it.name,
                     it.shortDescription,
                     it.imageUrl,
                     it.id,
-                    it.distanceFromSun
+                    it.distanceFromSun,
+                    favorite = favorites.contains(it.id)
                 )
             })
         }
@@ -40,13 +46,20 @@ class PlanetListViewModel @Inject constructor(private val planetRepository: Plan
     }
 
     private fun handleFavoriteTapped(intent: PlanetListFragment.Intent.TappedOnFavorite) {
-        _viewState.value = _viewState.value?.let { planetsViewState ->
-            PlanetListViewState(title, planetsViewState.planets.map {
-                if (it.id == intent.id)
-                    it.copy(favorite = !it.favorite)
-                else
-                    it
-            })
+        viewModelScope.launch {
+            _viewState.value = _viewState.value?.let { planetsViewState ->
+                PlanetListViewState(title, planetsViewState.planets.map {
+                    if (it.id == intent.id) {
+                        val newState = it.copy(favorite = !it.favorite)
+                        when (newState.favorite) {
+                            true -> favoriteRepository.saveFavorite(it.id)
+                            false -> favoriteRepository.removeFavorite(it.id)
+                        }
+                        newState
+                    } else
+                        it
+                })
+            }
         }
     }
 }
