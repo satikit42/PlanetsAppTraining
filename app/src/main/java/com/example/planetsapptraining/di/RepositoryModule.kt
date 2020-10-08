@@ -2,8 +2,10 @@ package com.example.planetsapptraining.di
 
 import android.content.Context
 import com.example.planetsapptraining.domain.FavoriteRepository
+import com.example.planetsapptraining.domain.NotificationRepository
 import com.example.planetsapptraining.domain.PlanetRepository
 import com.example.planetsapptraining.repositories.FavoriteRepositoryImpl
+import com.example.planetsapptraining.repositories.NotificationRepositoryImpl
 import com.example.planetsapptraining.repositories.PlanetRepositoryImpl
 import com.example.planetsapptraining.repositories.database.PlanetDao
 import com.example.planetsapptraining.repositories.retrofit.PlanetService
@@ -24,5 +26,10 @@ class RepositoryModule {
     @Provides
     fun provideFavoriteRepository(context: Context): FavoriteRepository {
         return FavoriteRepositoryImpl(context)
+    }
+
+    @Provides
+    fun provideNotificationRepository(context: Context): NotificationRepository {
+        return NotificationRepositoryImpl(context)
     }
 }
