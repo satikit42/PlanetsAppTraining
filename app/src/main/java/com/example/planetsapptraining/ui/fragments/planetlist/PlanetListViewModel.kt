@@ -5,13 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.planetsapptraining.domain.FavoriteRepository
+import com.example.planetsapptraining.domain.NotificationRepository
 import com.example.planetsapptraining.domain.PlanetRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PlanetListViewModel @Inject constructor(
     private val planetRepository: PlanetRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
+    private val notificationRepository: NotificationRepository
 ) :
     ViewModel() {
 
@@ -51,7 +53,10 @@ class PlanetListViewModel @Inject constructor(
                     if (it.id == intent.id) {
                         val newState = it.copy(favorite = !it.favorite)
                         when (newState.favorite) {
-                            true -> favoriteRepository.saveFavorite(it.id)
+                            true -> {
+                                favoriteRepository.saveFavorite(it.id)
+                                notificationRepository.notifyFavoritePlanet(it.name, it.id)
+                            }
                             false -> favoriteRepository.removeFavorite(it.id)
                         }
                         newState
