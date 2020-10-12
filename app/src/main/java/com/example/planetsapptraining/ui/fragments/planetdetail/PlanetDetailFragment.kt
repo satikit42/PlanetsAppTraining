@@ -1,5 +1,8 @@
 package com.example.planetsapptraining.ui.fragments.planetdetail
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,8 +70,18 @@ class PlanetDetailFragment : Fragment() {
                 "Description",
                 viewState.content.description.toString()
             )
+            if(viewState.content.favorite){
+                ObjectAnimator.ofFloat(textPlanetName, "scaleX", 0.8f, 1.2f).start()
+                ObjectAnimator.ofFloat(textPlanetName, "scaleY", 0.8f, 1.2f).start()
+                (AnimatorInflater.loadAnimator(
+                    requireContext(),
+                    R.animator.planet_animator
+                ) as AnimatorSet).apply {
+                    setTarget(imagePlanet)
+                    start()
+                }
+            }
         }
-
 
     }
 }
