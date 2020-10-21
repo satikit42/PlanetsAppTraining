@@ -1,5 +1,7 @@
 package com.example.planetsapptraining.repositories
 
+import com.example.planetsapptraining.di.PlanetDao
+import com.example.planetsapptraining.di.PlanetEntity
 import com.example.planetsapptraining.domain.Planet
 import com.example.planetsapptraining.domain.PlanetRepository
 import com.example.planetsapptraining.repositories.retrofit.PlanetService
@@ -9,15 +11,31 @@ import kotlinx.coroutines.withContext
 
 class PlanetRepositoryImpl(
     private val service: PlanetService,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val planetDao: PlanetDao
 ) : PlanetRepository {
 
     override suspend fun getPlanetList(): List<Planet> {
         return withContext(dispatcher) {
-            val planetList = service.getPlanetList()
-            planetList.map {
-                it.mapToDomain()
-            }.sortedBy { it.distanceFromSun }
+            val dataBaseplanets = planetDao.getAll()
+            if(dataBaseplanets.isEmpty()){
+                val planetList = service.getPlanetList()
+                val planetListEntity = planetList.map { PlanetEntity(id = it.id,
+                    name = it.name,shortDescription = it.shortDescription,imageUrl = it.imageUrl,
+                    distanceFromSun = it.distanceFromSun) }
+                planetDao.insertAll(planetListEntity)
+                planetList.map {
+                    it.mapToDomain()
+                }.sortedBy { it.distanceFromSun }
+            }
+            else{
+                dataBaseplanets.map{
+                    Planet(id = it.id,
+                        name = it.name,shortDescription = it.shortDescription,imageUrl = it.imageUrl,
+                        distanceFromSun = it.distanceFromSun)
+                }
+            }
+
         }
     }
 

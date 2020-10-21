@@ -1,5 +1,7 @@
 package com.example.planetsapptraining.repositories
 
+import com.example.planetsapptraining.di.AppDatabase
+import com.example.planetsapptraining.di.PlanetDao
 import com.example.planetsapptraining.domain.Planet
 import com.example.planetsapptraining.repositories.dto.PlanetDetailResponse
 import com.example.planetsapptraining.repositories.dto.PlanetResponse
