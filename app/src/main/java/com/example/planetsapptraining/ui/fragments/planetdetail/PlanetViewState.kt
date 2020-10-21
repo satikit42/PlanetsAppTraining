@@ -13,6 +13,7 @@ data class PlanetViewState(
     val distanceFromSun: Double,
     val description: String? = null,
     val planetType: String? = null,
-    val surfaceGravity: Double? = null
+    val surfaceGravity: Double? = null,
+    val favorite: Boolean = false
 ) : Parcelable,
     ItemWithImageAndTextViewState

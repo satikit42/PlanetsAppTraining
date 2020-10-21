@@ -22,4 +22,15 @@ class PlanetListViewModel @Inject constructor(val planetRepository: PlanetReposi
             })
         }
     }
+
+    fun favouriteTapped(id: Int) {
+        _viewState.value = _viewState.value?.let { planetsViewState ->
+            PlanetListViewState("Planets", planetsViewState.planets.map {
+                if (it.id == id) {
+                    it.copy(favorite = !it.favorite)
+                } else
+                    it
+            })
+        }
+    }
 }

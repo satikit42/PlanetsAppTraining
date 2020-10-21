@@ -15,7 +15,7 @@ import com.example.planetsapptraining.ui.components.itemWithImage.ItemWithImageA
 import kotlinx.android.synthetic.main.fragment_planet_list.*
 import javax.inject.Inject
 
-class PlanetListFragment : Fragment(), ItemTappedListener {
+class PlanetListFragment : Fragment()  {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: PlanetAdapter
@@ -46,7 +46,7 @@ class PlanetListFragment : Fragment(), ItemTappedListener {
         viewAdapter = PlanetAdapter(
             viewState.planets,
             requireContext(),
-            this
+            :: onItemTapped
         )
 
         recyclerView = recycler_view_planets.apply {
@@ -56,12 +56,20 @@ class PlanetListFragment : Fragment(), ItemTappedListener {
         }
     }
 
-    override fun onItemTapped(item: ItemWithImageAndTextViewState) {
-        findNavController(this).navigate(
-            PlanetListFragmentDirections.actionPlanetListFragmentToPlanetDetailFragment(
-                item.id
-            )
-        )
+    fun onItemTapped(intent: PlanetAdapter.Intent) {
+        when(intent){
+            is PlanetAdapter.Intent.PlanetTapped -> {
+                findNavController(this).navigate(
+                    PlanetListFragmentDirections.actionPlanetListFragmentToPlanetDetailFragment(
+                        intent.id
+                    )
+                )
+            }
+            is PlanetAdapter.Intent.FavouritePlanetTapped -> {
+                viewModel.favouriteTapped(intent.id)
+            }
+        }
+
     }
 }
 

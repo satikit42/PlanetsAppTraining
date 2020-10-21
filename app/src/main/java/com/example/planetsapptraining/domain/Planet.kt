@@ -11,8 +11,9 @@ data class Planet (
     val id: Int,
     val distanceFromSun: Double,
     val description: String? = null,
-    val planetType: String? = null,
-    val surfaceGravity: Double? = null) : Parcelable {
+    val planetType: String? = null,val surfaceGravity: Double? = null,
+    val isFavouritePlanet: Boolean = false
+    ) : Parcelable {
     override fun toString(): String {
         return name
     }
