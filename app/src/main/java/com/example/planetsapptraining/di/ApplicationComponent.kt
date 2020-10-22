@@ -6,7 +6,7 @@ import com.example.planetsapptraining.ui.fragments.planetlist.PlanetListFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [NetworkModule::class, RepositoryModule::class])
+@Component(modules = [NetworkModule::class, RepositoryModule::class,NotificationModule::class])
 interface ApplicationComponent {
     fun inject(planetDetailFragment: PlanetDetailFragment)
     fun inject(planetListFragment: PlanetListFragment)

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.planetsapptraining.domain.NotificationRepository
 import com.example.planetsapptraining.domain.PlanetRepository
 import com.example.planetsapptraining.repositories.retrofit.PreferenceRepository
 import com.example.planetsapptraining.repositories.retrofit.PreferenceRepositoryImplementation
@@ -11,7 +12,7 @@ import com.example.planetsapptraining.ui.fragments.planetdetail.PlanetViewState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlanetListViewModel @Inject constructor(val planetRepository: PlanetRepository,val preferenceRepository: PreferenceRepository) : ViewModel() {
+class PlanetListViewModel @Inject constructor(val planetRepository: PlanetRepository,val preferenceRepository: PreferenceRepository,val notificationRepository: NotificationRepository) : ViewModel() {
 
     private val _viewState = MutableLiveData<PlanetListViewState>()
     val viewState: LiveData<PlanetListViewState>
@@ -28,7 +29,7 @@ class PlanetListViewModel @Inject constructor(val planetRepository: PlanetReposi
         }
     }
 
-    fun favouriteTapped(id: Int) {
+    fun favouriteTapped(name: String,id: Int,isFavourate: Boolean) {
         _viewState.value = _viewState.value?.let { planetsViewState ->
             PlanetListViewState("Planets", planetsViewState.planets.map {
                 if (it.id == id) {
@@ -38,5 +39,7 @@ class PlanetListViewModel @Inject constructor(val planetRepository: PlanetReposi
             })
         }
         preferenceRepository.saveFavoritePlanet(id)
+        notificationRepository.notifyFavoritePlanet(name,id,isFavourate)
     }
+
 }

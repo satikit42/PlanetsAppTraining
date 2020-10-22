@@ -1,5 +1,6 @@
 package com.example.planetsapptraining.ui.fragments.planetlist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planetsapptraining.*
-import com.example.planetsapptraining.ui.components.itemWithImage.ItemTappedListener
-import com.example.planetsapptraining.ui.components.itemWithImage.ItemWithImageAndTextViewState
+import com.example.planetsapptraining.App
+import com.example.planetsapptraining.R
 import kotlinx.android.synthetic.main.fragment_planet_list.*
 import javax.inject.Inject
 
-class PlanetListFragment : Fragment()  {
+class PlanetListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: PlanetAdapter
-    @Inject lateinit var viewModel: PlanetListViewModel
+    @Inject
+    lateinit var viewModel: PlanetListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,7 @@ class PlanetListFragment : Fragment()  {
         viewAdapter = PlanetAdapter(
             viewState.planets,
             requireContext(),
-            :: onItemTapped
+            ::onItemTapped
         )
 
         recyclerView = recycler_view_planets.apply {
@@ -56,8 +57,9 @@ class PlanetListFragment : Fragment()  {
         }
     }
 
+    @SuppressLint("NewApi")
     fun onItemTapped(intent: PlanetAdapter.Intent) {
-        when(intent){
+        when (intent) {
             is PlanetAdapter.Intent.PlanetTapped -> {
                 findNavController(this).navigate(
                     PlanetListFragmentDirections.actionPlanetListFragmentToPlanetDetailFragment(
@@ -66,7 +68,7 @@ class PlanetListFragment : Fragment()  {
                 )
             }
             is PlanetAdapter.Intent.FavouritePlanetTapped -> {
-                viewModel.favouriteTapped(intent.id)
+                viewModel.favouriteTapped(intent.name, intent.id,intent.isFavourite)
             }
         }
 

@@ -29,8 +29,8 @@ class PlanetAdapter(
 
     override fun onBindViewHolder(holder: PlanetViewHolder, position: Int) {
         val planetViewState = planetListViewState[position]
-        holder.itemView.setOnClickListener{ itemTappedListener(Intent.PlanetTapped(planetViewState.id)) }
-        holder.itemView.imageFavorite.setOnClickListener{itemTappedListener(Intent.FavouritePlanetTapped(planetViewState.id))}
+        holder.itemView.setOnClickListener{ itemTappedListener(Intent.PlanetTapped(planetViewState.id,planetViewState.name,planetViewState.favorite)) }
+        holder.itemView.imageFavorite.setOnClickListener{itemTappedListener(Intent.FavouritePlanetTapped(planetViewState.id,planetViewState.name,planetViewState.favorite))}
         holder.render(planetViewState)
     }
 
@@ -49,11 +49,15 @@ class PlanetAdapter(
 sealed class Intent{
     // For making fav
     data class FavouritePlanetTapped(
-        val id: Int
+        val id: Int,
+        val name: String,
+        val isFavourite: Boolean
     ): Intent()
     // For Navigation
     data class PlanetTapped(
-        val id: Int
+        val id: Int,
+        val name: String,
+        val isFavourite: Boolean
     ): Intent()
 }
 }

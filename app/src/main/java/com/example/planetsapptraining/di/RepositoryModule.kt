@@ -2,6 +2,7 @@ package com.example.planetsapptraining.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.planetsapptraining.domain.NotificationRepository
 import com.example.planetsapptraining.domain.PlanetRepository
 import com.example.planetsapptraining.repositories.PlanetRepositoryImpl
 import com.example.planetsapptraining.repositories.retrofit.PlanetService

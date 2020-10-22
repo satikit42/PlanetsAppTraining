@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Planets App</string>
     <string name="planet_list_title">Planets</string>
+    <string name="channel_id">LikeChannelPlanet</string>
+    <string name="channel_Name">LikeChannelPlanetName</string>
+    <string name="channel_description">Like Channel Planet Description</string>
+    channel_description
 </resources>
