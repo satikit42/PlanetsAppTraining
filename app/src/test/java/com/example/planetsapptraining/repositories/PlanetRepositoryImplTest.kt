@@ -2,14 +2,12 @@ package com.example.planetsapptraining.repositories
 
 import com.example.planetsapptraining.di.AppDatabase
 import com.example.planetsapptraining.di.PlanetDao
+import com.example.planetsapptraining.di.PlanetEntity
 import com.example.planetsapptraining.domain.Planet
 import com.example.planetsapptraining.repositories.dto.PlanetDetailResponse
 import com.example.planetsapptraining.repositories.dto.PlanetResponse
 import com.example.planetsapptraining.repositories.retrofit.PlanetService
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkClass
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
@@ -22,8 +20,9 @@ class PlanetRepositoryImplTest {
 
     private lateinit var repository: PlanetRepositoryImpl
     private lateinit var service: PlanetService
+    private lateinit var planetDao: PlanetDao
     private val testDispatcher = TestCoroutineDispatcher()
-    private val planetAmount = 10
+    private val planetAmount = 2
     private val planetDetailResponse = PlanetDetailResponse(
         1,
         "name",
@@ -45,13 +44,40 @@ class PlanetRepositoryImplTest {
             }
             coEvery { getPlanetDetail(1) } returns planetDetailResponse
         }
-        repository = PlanetRepositoryImpl(service, testDispatcher)
+        planetDao = mockk(relaxUnitFun = true){
+            coEvery {
+                getAll()
+            }returns emptyList()
+        }
+        repository = PlanetRepositoryImpl(service, testDispatcher,planetDao)
     }
 
     @Test
     fun retrievePlanetListFromRepository() = testDispatcher.runBlockingTest {
+        coEvery { planetDao.getAll() } returns(1..2).map {
+            PlanetEntity(id = 0,name = "Earth",shortDescription = "My world",imageUrl = "",distanceFromSun = 0.2)
+        }
         val planets = repository.getPlanetList()
         assertEquals(planetAmount, planets.size)
+    }
+
+    @Test
+    fun getPlanetListNoAPI() = testDispatcher.runBlockingTest {
+        coEvery { planetDao.getAll() } returns(1..2).map {
+            PlanetEntity(id = 0,name = "Earth",shortDescription = "My world",imageUrl = "",distanceFromSun = 0.2)
+        }
+        val planets = repository.getPlanetList()
+        coVerify (exactly = 0)  {service.getPlanetList()}
+    }
+
+    @Test
+    fun getPlanetWhenEmptyEntity() = testDispatcher.runBlockingTest {
+        coEvery { planetDao.getAll() } returns emptyList()
+        coEvery { service.getPlanetList() } returns(1..2).map{
+            PlanetResponse(id = 0,name = "Earth",shortDescription = "",imageUrl = "",distanceFromSun = 0.3)
+        }
+        val planets = repository.getPlanetList()
+        coVerify (exactly = 1) {service.getPlanetList()}
     }
 
     @Test
